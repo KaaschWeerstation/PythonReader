@@ -1,4 +1,5 @@
 from mmap import *
+from datetime import *
 # https://docs.python.org/3/library/mmap.html
 # https://stackoverflow.com/questions/1035340/reading-binary-file-and-looping-over-each-byte/20014805#20014805
 
@@ -9,11 +10,15 @@ if __name__ == '__main__':
     with open("venv/10490/18282.wd", "rb", 0) as f, mmap(f.fileno(), 0, access=ACCESS_READ) as s:
         print("SerialVersion: " + str(bytesToInt(s[0:8])))
         print("StationId: " + str(bytesToInt(s[8:12])))
-        print("Date: " + str(bytesToInt(s[12:20])))
+        mDate = datetime(1970, 1, 1, 0, 0) + timedelta(bytesToInt(s[12:20]) - 1)
+        print("Date: " + mDate.strftime("%d-%m-%Y"))
         index = 20
         size = s.size()
         while index+52 <= s.size():
-            print("\nTime: " + str(bytesToInt(s[index:index+8])))
+
+            fullDate = mDate + timedelta(seconds=(bytesToInt(s[index:index+8])))
+            print("\nTime: " + fullDate.strftime("%d-%m-%Y %H:%M:%S"))
+
             print("Temperature: " + str(bytesToInt(s[index+8:index+12])/100))
             print("Dew: " + str(bytesToInt(s[index+12:index+16])/100))
             print("PressureSeaLevel: " + str(bytesToInt(s[index+16:index+20])/100))
