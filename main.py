@@ -15,31 +15,34 @@ if __name__ == '__main__':
         d[(x.split(",")[0]).replace('"', '')] = (x.split(",")[1].replace('"', '').title())
     f.close()
 
-    with open("venv/664470/18296.wd", "rb", 0) as f, mmap(f.fileno(), 0, access=ACCESS_READ) as s:
+    with open("venv/716040/18297.wd", "rb", 0) as f, mmap(f.fileno(), 0, access=ACCESS_READ) as s:
         print("SerialVersion: " + str(bytesToInt(s[0:8])))
         print("StationId: " + str(bytesToInt(s[8:12])))
         print("Station location: " + d[str(bytesToInt(s[8:12]))])
-        mDate = datetime(1970, 1, 1, 0, 0) + timedelta(bytesToInt(s[12:20]) - 1)
+        mDate = datetime(1970, 1, 1, 0, 0) + timedelta(bytesToInt(s[12:20]))
+        # mDate = datetime(1970, 1, 1, 0, 0) + timedelta(bytesToInt(s[12:20]) - 1)
         print("Date: " + mDate.strftime("%d-%m-%Y"))
         index = 20
         size = s.size()
-        while index+29 <= s.size():
+        while index+23 <= s.size():
 
-            fullDate = mDate + timedelta(seconds=(bytesToInt(s[index:index+8])))
+            fullDate = mDate + timedelta(seconds=(bytesToInt(s[index:index+4])))
             print("\nTime: " + fullDate.strftime("%d-%m-%Y %H:%M:%S"))
 
-            print("Temperature: " + str(bytesToInt(s[index+8:index+10])/100))
-            print("Dew: " + str(bytesToInt(s[index+10:index+12])/100))
-            print("PressureSeaLevel: " + str((bytesToInt(s[index+12:index+14])+90000)/100))
-            print("Visibility: " + str(bytesToInt(s[index+14:index+16])/100))
-            print("PressureStation: " + str((bytesToInt(s[index+16:index+18])+90000)/100))
-            print("Wind: " + str(bytesToInt(s[index+18:index+20])/100))
-            print("Precipictation: " + str(bytesToInt(s[index+20:index+22])/100))
-            print("Snow: " + str(bytesToInt(s[index+22:index+24])/100))
-            print("Events: " + str(bytesToInt(s[index+24:index+25])))
-            print("Cloudcoverage: " + str(bytesToInt(s[index+25:index+27])/100))
-            print("WindDirection: " + str(bytesToInt(s[index+27:index+29])/100))
-            index += 29
+            print("Temperature: " + str(bytesToInt(s[index+4:index+6])/100))
+            print("Dew: " + str(round((bytesToInt(s[index+4:index+6])/100 + bytesToInt(s[index+6:index+7])/10), 1)))
+            print("PressureSeaLevel: " + str((bytesToInt(s[index+7:index+9])+90000)/100))
+            print("Visibility: " + str(bytesToInt(s[index+9:index+11])/100))
+            print("PressureStation: " + str(round((bytesToInt(s[index+7:index+9])+90000)/100 +
+                                                  bytesToInt(s[index+11:index+12])/10, 1)))
+            print("Wind: " + str(bytesToInt(s[index+12:index+14])/100))
+            print("Precipictation: " + str(bytesToInt(s[index+14:index+16])/100))
+            print("Snow: " + str(bytesToInt(s[index+16:index+18])/100))
+            print("Events: " + str(bytesToInt(s[index+18:index+19])))
+            print("Cloudcoverage: " + str(bytesToInt(s[index+19:index+21])/100))
+            print("WindDirection: " + str(bytesToInt(s[index+21:index+23])/100))
+
+            index += 23
 
 
 
