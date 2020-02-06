@@ -1,6 +1,5 @@
 from mmap import *
 from datetime import *
-import csv
 
 # https://docs.python.org/3/library/mmap.html
 # https://stackoverflow.com/questions/1035340/reading-binary-file-and-looping-over-each-byte/20014805#20014805
@@ -15,7 +14,7 @@ if __name__ == '__main__':
         d[(x.split(",")[0]).replace('"', '')] = (x.split(",")[1].replace('"', '').title())
     f.close()
 
-    with open("venv/716040/18297.wd", "rb", 0) as f, mmap(f.fileno(), 0, access=ACCESS_READ) as s:
+    with open("venv/405750/18298.wd", "rb", 0) as f, mmap(f.fileno(), 0, access=ACCESS_READ) as s:
         print("SerialVersion: " + str(bytesToInt(s[0:8])))
         print("StationId: " + str(bytesToInt(s[8:12])))
         print("Station location: " + d[str(bytesToInt(s[8:12]))])
@@ -43,6 +42,3 @@ if __name__ == '__main__':
             print("WindDirection: " + str(bytesToInt(s[index+21:index+23])/100))
 
             index += 23
-
-
-
