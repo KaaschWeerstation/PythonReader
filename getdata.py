@@ -28,7 +28,6 @@ def getData(stationID, filename):
                 # stationData[i] = {'time': timeData, 'temperature': temperature, 'humidity': humidty(temperature, dewPoint)}
                 writer.writerow([timeData, temperature, humidty(temperature, dewPoint)])
 
-                i += 1
                 index += 23
 
         f.close()
