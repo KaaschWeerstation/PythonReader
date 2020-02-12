@@ -15,7 +15,7 @@ def humidty(temperature, dewPoint):
 
 
 def getData(stationID, filename):
-    with open("venv/" + str(stationID) + ".csv", 'w', newline='') as wd:
+    with open("venv/" + str(stationID) + "/" + str(filename) + ".csv", 'w', newline='') as wd:
         writer = csv.writer(wd)
         writer.writerow(["Time", "Temperature", "Humidity"])
         with open("venv/" + str(stationID) + "/" + str(filename) + ".wd", "rb", 0) as f, mmap(f.fileno(), 0,
@@ -35,6 +35,3 @@ def getData(stationID, filename):
 
         f.close()
     wd.close()
-
-
-getData(405750, 18298)
