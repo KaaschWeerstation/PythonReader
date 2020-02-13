@@ -18,7 +18,7 @@ def humidty(temperature, dewPoint):
 
 
 def getData(stationID, filename, country):
-    with open(str(stationID) + "/" + str(filename), "rb", 0) as f, mmap(f.fileno(), 0, access=ACCESS_READ) as s:
+    with open("venv/" + str(stationID) + "/" + str(filename), "rb", 0) as f, mmap(f.fileno(), 0, access=ACCESS_READ) as s:
         mDate = datetime(1970, 1, 1, 0, 0) + timedelta(bytesToInt(s[12:20]))
         index = 20
         stationData = {}
@@ -39,10 +39,10 @@ def getData(stationID, filename, country):
 
 
 def getWeatherData():
-    with open("weatherdata.csv", 'w', newline='') as wd:
+    with open("csv/weatherdata.csv", 'w', newline='') as wd:
         writer = csv.writer(wd)
         writer.writerow(["Country", "Time", "Temperature", "Humidity"])
-        with open('stationid.csv', 'r', newline='') as f:
+        with open('csv/stationid.csv', 'r', newline='') as f:
             reader = csv.reader(f)
             for row in reader:
                 if row[0].isdigit():
@@ -53,5 +53,3 @@ def getWeatherData():
                             writer.writerow([dataDict[data][0], dataDict[data][1], dataDict[data][2], dataDict[data][3]])
         f.close()
     wd.close
-
-getWeatherData()
