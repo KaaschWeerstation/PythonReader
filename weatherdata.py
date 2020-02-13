@@ -31,7 +31,7 @@ def getData(stationID, filename, country):
             fullDate = mDate + timedelta(seconds=(bytesToInt(s[index:index + 4])))
             timeData = fullDate.strftime("%d-%m-%Y %H:%M:%S")
             stationData[i] = {'country': country, 'time': timeData, 'temperature': temperature, 'humidity': humidty(temperature, dewPoint)}
-
+            # print(stationData)
             i += i
             index += 23
     f.close()
@@ -46,10 +46,12 @@ def getWeatherData():
             reader = csv.reader(f)
             for row in reader:
                 if row[0].isdigit():
-                    files = [f for f in listdir(str(row[0])) if isfile(join(str(row[0]), f))]
+                    files = [f for f in listdir("venv/"+str(row[0])) if isfile(join("venv/"+str(row[0]), f))]
                     for file in files:
                         dataDict = getData(row[0], file, row[1])
                         for data in dataDict:
-                            writer.writerow([dataDict[data][0], dataDict[data][1], dataDict[data][2], dataDict[data][3]])
+                            writer.writerow([dataDict[data]['country'], dataDict[data]['time'], dataDict[data]['temperature'], dataDict[data]['humidity']])
         f.close()
     wd.close
+
+getWeatherData()
